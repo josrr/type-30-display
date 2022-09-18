@@ -1,0 +1,65 @@
+#+TITLE: type-30-display: Minskytron in CLIM
+#+OPTIONS: toc:nil num:nil
+#+LANGUAGE: es
+#+UNNUMBERED: t
+#+HTML_DOCTYPE: html5
+#+HTML_HEAD: <link rel="stylesheet" href="css/spectre.min.css">
+#+HTML_HEAD_EXTRA:  <link rel="stylesheet" href="css/estilo.css">
+#+HTML_HEAD_EXTRA: <link href="favicon.png" rel="icon" type="image/png">
+#+HTML_HEAD_EXTRA: <meta name="Description" content="Minksytron usin McCLIM.
+#+HTML_HEAD_EXTRA: Written using Common Lisp and McCLIM  by José M. A. Ronquillo Rivera." />
+#+HTML_LINK_HOME: https://www.rufina.link/type-30-display
+#+HTML_LINK_UP: https://www.rufina.link/
+
+This is an implementation of the display hack known as minskytron
+using [[https://mcclim.common-lisp.dev/][McCLIM]].
+
+* Screenshots
+
+#+NAME:   fig:sc01
+#+ATTR_HTML: :class img-responsive centered
+[[./002.png]]
+
+#+NAME:   fig:sc01
+#+ATTR_HTML: :class img-responsive centered
+[[./003.png]]
+
+#+NAME:   fig:sc01
+#+ATTR_HTML: :class img-responsive centered
+[[./004.png]]
+
+
+* How to run the program
+
+To run the program, clone [[https://github.com/josrr/type-30-display][this]] repository in your Quicklisp
+=local-projects= directory
+
+#+BEGIN_SRC
+ $ cd ~/quicklisp/local-projects/
+ $ git clone https://github.com/josrr/type-30-display.git
+#+END_SRC
+
+then:
+
+#+BEGIN_SRC
+ $ sbcl
+ This is SBCL 2.2.6, an implementation of ANSI Common Lisp.
+ More information about SBCL is available at <http://www.sbcl.org/>.
+
+ SBCL is free software, provided as is, with absolutely no warranty.
+ It is mostly in the public domain; some portions are provided under
+ BSD-style licenses.  See the CREDITS and COPYING files in the
+ distribution for more information.
+
+ * (ql:register-local-projects)
+ NIL
+ * (ql:quickload "type-30-display")
+ To load "type-30-display":
+   Load 1 ASDF system:
+     type-30-display
+ ; Loading "type-30-display"
+ ..................................................
+ .....
+ ("type-30-display")
+ * (type-30-display:main)
+#+END_SRC
