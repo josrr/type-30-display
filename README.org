@@ -1,4 +1,6 @@
-#+TITLE: type-30-display: Minskytron in CLIM
+#+TITLE: type-30-display: Minskytron in McCLIM
+#+AUTHOR: José M. A. Ronquillo Rivera
+#+EMAIL: jose@rufina.link
 #+OPTIONS: toc:nil num:nil
 #+LANGUAGE: es
 #+UNNUMBERED: t
