@@ -116,9 +116,11 @@
 
 (define-presentation-method highlight-presentation ((type switch) record stream state)
   (with-bounding-rectangle* (x0 y0 x1 y1) record
-    (draw-rectangle* stream x0 y0 x1 y1
-                     :filled t
-                     :ink +flipping-ink+)))
+    (with-scaling (stream 11/10 11/10 (make-point (+ x0 (/ (- x1 x0) 2))
+                                                  (+ y0 (/ (- y1 y0) 2))))
+      (draw-rectangle* stream x0 y0 x1 y1
+                       :filled nil
+                       :ink +flipping-ink+))))
 
 (define-presentation-method present (switch (type switch) stream (view graphical-view)
                                       &key &allow-other-keys)
@@ -281,6 +283,16 @@
                 (gen-minskytron-pars (type-30-data display))
                 (gen-minskytron-pars)))
       (set-switches (type-30-data display) (type-30-switches *application-frame*)))))
+
+(define-type-30-display-command (com-pause :name "pause" :menu t) ()
+  (format *debug-io* "Pause!~%")
+  (let ((display (find-pane-named *application-frame* 'display-pane)))
+    (bt:with-lock-held ((type-30-lock *application-frame*))
+      (when (type-30-playing display)
+        (setf (type-30-animation-func display)
+              (if (null (type-30-animation-func display))
+                  #'minskytron
+                  nil))))))
 
 (define-type-30-display-command (com-change-switch :name "Change switch") ((switch 'switch))
   (declare (optimize (debug 3)))
