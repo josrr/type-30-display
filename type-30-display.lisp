@@ -284,16 +284,6 @@
                 (gen-minskytron-pars)))
       (set-switches (type-30-data display) (type-30-switches *application-frame*)))))
 
-(define-type-30-display-command (com-pause :name "pause" :menu t) ()
-  (format *debug-io* "Pause!~%")
-  (let ((display (find-pane-named *application-frame* 'display-pane)))
-    (bt:with-lock-held ((type-30-lock *application-frame*))
-      (when (type-30-playing display)
-        (setf (type-30-animation-func display)
-              (if (null (type-30-animation-func display))
-                  #'minskytron
-                  nil))))))
-
 (define-type-30-display-command (com-change-switch :name "Change switch") ((switch 'switch))
   (declare (optimize (debug 3)))
   (a:when-let* ((display (find-pane-named *application-frame* 'display-pane))
@@ -312,6 +302,15 @@
             (type-30-playing display) nil
             (type-30-animation-func display) nil))
     (frame-exit *application-frame*)))
+
+(define-type-30-display-command (com-pause :name "Pause" :menu t) ()
+  (let ((display (find-pane-named *application-frame* 'display-pane)))
+    (bt:with-lock-held ((type-30-lock *application-frame*))
+      (when (type-30-playing display)
+        (setf (type-30-animation-func display)
+              (if (null (type-30-animation-func display))
+                  #'minskytron
+                  nil))))))
 
 (define-presentation-to-command-translator change-sw-bit
     (switch com-change-switch type-30-display
