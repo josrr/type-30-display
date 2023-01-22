@@ -112,8 +112,9 @@
 
 (defparameter *num-frames* 48)
 
-(defparameter *colors* (loop for c from 1.0d0 downto 0.0d0 by (/ 1.0d0 *num-frames*)
-                             collect (clim:make-rgb-color 0.0000 c c)))
+(defparameter *colors* (reverse
+                        (loop for c from 1.0d0 downto 0.0d0 by (/ 1.0d0 *num-frames*)
+                              collect (clim:make-rgb-color 0.0000 c c))))
 
 (defun minskytron (pane data width height)
   (declare (optimize (speed 3))
@@ -121,7 +122,7 @@
   (let ((stream (type-30-medium-1 pane)))
     (when (zerop (type-30-frame-number pane))
       (draw-rectangle* stream 0 0 width height :filled t :ink +black+))
-    (loop for frame in (type-30-frames pane)
+    (loop for frame in (reverse (type-30-frames pane))
           for i from 1 for color in *colors*
           do (draw-frame stream frame color))
     (multiple-value-bind (xa ya xb yb xc yc frame)

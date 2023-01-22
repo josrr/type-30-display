@@ -242,7 +242,7 @@
           (type-30-medium-1 pane) medium-1
           (medium-drawable medium-0) pixmap-0
           (medium-drawable medium-1) pixmap-1
-          (type-30-frames pane) (make-array 8 :element-type 'list :initial-contents (loop repeat 8 collect (list)))
+          (type-30-frames pane) (list)
           (type-30-animation-thread frame) (bt:make-thread (animate *application-frame*)
                                                            :name "Animation"))
     (draw-rectangle* (type-30-medium-0 pane) 0 0
