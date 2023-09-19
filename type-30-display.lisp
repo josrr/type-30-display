@@ -13,8 +13,8 @@
                  (and (type-30-playing pane) (type-30-animation-func pane)))
               do (when (type-30-animation-func pane)
                    (funcall (type-30-animation-func pane) pane (type-30-data pane) width height)
-                   (queue-event pane (make-instance 'window-repaint-event :region +everywhere+
-                                                                          :sheet pane)))
+                   ;;(setf (pane-needs-redisplay pane) t)
+                   (queue-event pane (make-instance 'window-repaint-event :region +everywhere+ :sheet pane)))
             else do (bt:thread-yield) end
             do (setf time (local-time:timestamp+ time *pause* :nsec))
                (sleep (max 0.0d0
@@ -74,8 +74,15 @@
 
 (defmethod handle-repaint ((pane display-pane) region)
   (bt:with-lock-held ((type-30-lock *application-frame*))
-    (copy-from-pixmap (type-30-pixmap-0 pane) 0 0 *width* *height* pane 0 0))
+    (when (type-30-pixmap-0 pane)
+      (copy-from-pixmap (type-30-pixmap-0 pane) 0 0 *width* *height* pane 0 0)))
   t)
+
+#|(defun draw (frame pane)
+  (declare (ignore frame))
+  (when (type-30-pixmap-0 pane)
+    (bt:with-lock-held ((type-30-lock *application-frame*))
+      (copy-from-pixmap (type-30-pixmap-0 pane) 0 0 *width* *height* pane 0 0))))|#
 
 (defun draw-switch (pane x0 y0 wnibble h idx-bit bit)
   (let* ((wbit (/ wnibble 3))
@@ -206,6 +213,7 @@
   (:panes (display-pane (make-pane 'display-pane
                                    :background +black+
                                    :foreground +cyan+
+                                   ;;:display-function 'draw
                                    :display-time nil))
           (test-word-pane (make-clim-stream-pane :background (make-rgb-color (/ #x5a 255)
                                                                              (/ #x6e 255)
@@ -265,7 +273,7 @@
     (with-slots (escenario teclas) *application-frame*
       (let ((tecla (keyboard-event-key-name evento)))
         (case tecla
-          ((:|Q| :|q|) (when (type-30-playing gadget)
+          ((|:Q| :|q|) (when (type-30-playing gadget)
                          (execute-frame-command *application-frame* `(com-exit))))
           ((:|M| :|m|) (execute-frame-command *application-frame* `(com-minskytron :start))))))))
 
